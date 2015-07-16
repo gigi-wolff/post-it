@@ -1,0 +1,23 @@
+<p class='pull-right'>
+  [<%= link_to 'edit this post', edit_post_path(@post)%> ]
+</p>
+<p>
+  <%= render @post.categories %>
+</p>
+
+<%= render "shared/content_title", title: @post.title %>
+
+<p>
+  <%= @post.description %>
+</p>
+<hr/>
+<%= link_to 'go back to all posts', posts_path %>
+
+<h2> Create a comment: </h2>
+<!--the path you need is post/id/comment so @post needs to be an existing object, @comment needs to be a new object.  Rails short-cut syntax dictates form_for[@post,@comment] since comment is nested in post -->
+<%= form_for [@post, @comment] do |f| %>
+  <%= f.text_area :body %>
+  <br/>
+  <%= f.submit "Create Comment", class: "btn btn-primary" %>
+<% end %>
+

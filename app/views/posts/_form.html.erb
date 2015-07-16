@@ -1,0 +1,35 @@
+<!-- model-backed form takes an ojbect ie @post and infers all else based on convention. Form returns a hash in params that can be used for mass assignment, in this case "post"=>{"title"=>"some title"}.
+Post.create(params[:post]) is equivalent Post.create("title"=>"some title")
+
+text_field can to be any attribute (column) or virtual attribute of the post model that is permitted (post_controller under def post_params is where we set permissions). In the post model the attributes are: id, title, url, description, created at, updated at, user_id -->
+
+<% if @post.errors.any? %> <!-- if error array not empty  -->
+  <div class='row'>
+    <div class='alert alert-error span8'>
+      <h5> Please correct the following errors: </h5>
+      <ul>
+        <% @post.errors.full_messages.each do |msg| %>
+          <li> <%= msg %> </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<div class = 'well'>
+  <%= form_for @post do |f| %>
+    <div class = 'control-group'>
+      <%= f.label :title %>
+      <%= f.text_field :title%>
+    </div>
+    <div class = 'control-group'>
+      <%= f.label :url %>
+      <%= f.text_field :url%>
+    </div>
+    <div class = 'control-group'>
+      <%= f.label :description %>
+      <%= f.text_area :description, rows: 5%>
+    </div>    
+    <%= f.submit(@post.new_record? ? 'Create Post' : 'Update Post', class:'btn btn-primary')%>
+  <% end %>
+</div>
