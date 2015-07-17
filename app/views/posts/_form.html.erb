@@ -3,18 +3,7 @@ Post.create(params[:post]) is equivalent Post.create("title"=>"some title")
 
 text_field can to be any attribute (column) or virtual attribute of the post model that is permitted (post_controller under def post_params is where we set permissions). In the post model the attributes are: id, title, url, description, created at, updated at, user_id -->
 
-<% if @post.errors.any? %> <!-- if error array not empty  -->
-  <div class='row'>
-    <div class='alert alert-error span8'>
-      <h5> Please correct the following errors: </h5>
-      <ul>
-        <% @post.errors.full_messages.each do |msg| %>
-          <li> <%= msg %> </li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
-<% end %>
+<%= render 'shared/errors', obj: @post %>
 
 <div class = 'well'>
   <%= form_for @post do |f| %>
