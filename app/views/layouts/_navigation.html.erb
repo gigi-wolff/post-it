@@ -8,7 +8,7 @@
 </ul>
 
 <div class='nav_item'>
-  <%= link_to 'New Category', new_categories_path, class: 'btn btn-small'%>
+  <%= link_to 'New Category', new_category_path, class: 'btn btn-small'%>
 </div>
 
 <div class='btn-group nav_item'>
@@ -18,12 +18,12 @@
   <ul class='dropdown-menu'>  
     <% Category.all.each do |category| %>
       <li>
-        <%= link_to category.name, categories_path(category) %>
+        <%= link_to category.name, category_path(category) %>
       </li>  
     <% end %>
     <li class='divider'></li>
     <li>
-      <%= link_to(new_categories_path) do %>
+      <%= link_to(new_category_path) do %>
         <i class="icon-plus"></i>
         New Category
       <% end %>

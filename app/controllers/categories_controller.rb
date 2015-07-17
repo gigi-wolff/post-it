@@ -15,7 +15,8 @@ class CategoriesController < ApplicationController
     end
   end
 
-  def show  
+  def show 
+    #binding.pry 
     @category = Category.find(params[:id])
   end
 
