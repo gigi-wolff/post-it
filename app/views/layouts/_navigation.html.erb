@@ -2,36 +2,45 @@
   <li>
     <%= link_to "Postit!", root_path, :class => 'brand' %>
   </li>
-  <li>
-    <%= link_to "New Post", new_post_path %>
-  </li>
-</ul>
-
-<div class='nav_item'>
-  <%= link_to 'New Category', new_category_path, class: 'btn btn-small'%>
-</div>
-
-<div class='btn-group nav_item'>
-  <%= link_to '#', class: 'btn btn-small dropdown-toggle', 'data-toggle' => 'dropdown' do %>
-    Categories <span class='caret'></span>
-  <% end %>
-  <ul class='dropdown-menu'>  
-    <% Category.all.each do |category| %>
-      <li>
-        <%= link_to category.name, category_path(category) %>
-      </li>  
+  <div class='btn-group nav_item'>
+    <%= link_to '#', class: 'btn btn-small dropdown-toggle', 'data-toggle' => 'dropdown' do %>
+      Categories <span class='caret'></span>
     <% end %>
-    <li class='divider'></li>
-    <li>
-      <%= link_to(new_category_path) do %>
-        <i class="icon-plus"></i>
-        New Category
+    <ul class='dropdown-menu'>  
+      <% Category.all.each do |category| %>
+        <li>
+          <%= link_to category.name, category_path(category) %>
+        </li>  
       <% end %>
+      <% if logged_in? %>
+        <li class='divider'></li>
+        <li>
+          <%= link_to(new_category_path) do %>
+            <i class="icon-plus"></i>
+            New Category
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <% if logged_in? %>
+    <li>
+      <%= link_to 'New Category', new_category_path %> 
     </li>
-  </ul>
-</div>
-
-
-<div class='nav_item'>
-  <%= link_to 'New Post', new_post_path, class: 'btn btn-success btn-small'%>
-</div>
+    <div class='nav_item'>
+      <%= link_to 'New Post', new_post_path, class: 'btn btn-success btn-small'%>
+    </div>
+    <li>
+      <%= link_to "Log Out", logout_path %>
+    </li>
+  <% else %>
+    <li>
+      <div class='nav_item'>
+        <%= link_to "Register", register_path, class: 'btn btn-success btn-small' %>
+      </div>
+    </li>
+    <li>
+      <%= link_to "Login", login_path %>
+    </li>
+  <% end %>
+</ul>

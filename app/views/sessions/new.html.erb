@@ -1,0 +1,16 @@
+<%= render 'shared/content_title', title: "Please Log In" %>
+
+<!-- non-model backed form, use helpers -->
+<div class = 'well'>
+  <%= form_tag'/login' do %>
+    <div class = 'control-group'>
+      <%= label_tag :username %>
+      <%= text_field_tag :username, params[:username] || '' %>
+    </div>
+    <div class = 'control-group'>
+      <%= label_tag :password %>
+      <%= password_field_tag :password, params[:password] || '' %>
+    </div>
+     <%= submit_tag 'Login', class:'btn btn-success'%>
+  <% end %>
+</div>

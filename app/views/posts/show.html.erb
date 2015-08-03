@@ -1,11 +1,14 @@
-<p class='pull-right'>
-  [<%= link_to 'edit this post', edit_post_path(@post)%> ]
-</p>
+<% if logged_in? %>
+  <p class='pull-right'>
+    [<%= link_to 'edit this post', edit_post_path(@post)%> ]
+  </p>
+<% end %>
 <p>
-  <%= render @post.categories %>
+  <!-- will use _post.html.erb partial -->
+  <%= render @post.categories %> 
 </p>
 
-<%= render "shared/content_title", title: @post.title %>
+<h4> <%= link_to @post.title, fix_url(@post.url) %> <h4>
 
 <p>
   <%= @post.description %>
@@ -13,11 +16,39 @@
 <hr/>
 <%= link_to 'go back to all posts', posts_path %>
 
-<h2> Create a comment: </h2>
-<!--the path you need is post/id/comment so @post needs to be an existing object, @comment needs to be a new object.  Rails short-cut syntax dictates form_for[@post,@comment] since comment is nested in post -->
-<%= form_for [@post, @comment] do |f| %>
-  <%= f.text_area :body %>
-  <br/>
-  <%= f.submit "Create Comment", class: "btn btn-primary" %>
+
+
+<!--want to submit form info to server using post/id/comment url. 
+Rails will know to do this because comment is nested in post. Coming in, @post needs to be an existing object, @comment needs to be a new object.  Syntax is: 
+form_for[@post,@comment] where 1st arg is parent, 2nd is child
+Upon clicking "Create Comment" button, params sent to post/id/comment url are:
+  "authenticity_token"=>"BBKsdmmb5kmR9PjeYkj/x07qty6ghvXPlRE0CKubm4M=",
+  "comment"=>{"body"=>"this is a test"},
+  "commit"=>"Create Comment",
+  "action"=>"create",  
+  "controller"=>"comments",
+  "post_id"=>"1"} 
+This post action will be mapped by router.rb file to comments_controller "create" method and the params hash will be accessable to that method -->
+<% if logged_in? %>
+  <h2> Create a comment: </h2>
+  <%= form_for [@post, @comment] do |f| %>
+    <%= render 'shared/errors', obj: @comment %>
+    <div class='control-group'>
+      <%= f.label :body, "Leave a comment" %>
+      <%= f.text_area :body, rows: 3, class: 'span4' %>
+    </div>
+    <br/>
+    <%= f.submit "Create Comment", class: "btn btn-primary" %>
+  <% end %>
 <% end %>
 
+
+<h5>Comments:</h5>
+<% @post.comments.each do |comment| %>
+  <div class="well span8">
+    <en> "<%= comment.body %>"</en>
+    <br/>       
+    <span class="quiet">by</span> <%= comment.creator.username %>
+     <small>at <%= display_datetime(comment.created_at) %></small>     
+  </div>
+<% end %>

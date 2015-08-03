@@ -1,4 +1,7 @@
-<!-- obj must be an active record object -->
+<!-- 
+Rails validations are triggered when the data submissions try to hit the database.The errors are saved on the model object. When there are validation errors, they are saved to the object.errors. We display the validation messages by referencing the object.errors.full_messages method like below. By using the full_messages method, the errors are displayed in a nice, readable sentence format.
+Here, obj must be an active record object.
+-->
 <% if obj.errors.any? %> <!-- if error array not empty  -->
   <div class='row'>
     <div class='alert alert-error span8'>

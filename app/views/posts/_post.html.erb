@@ -1,14 +1,17 @@
 <div class="row">
   <div class="span8 well">
     <%= render post.categories %>
-    <h4><%= link_to post.title, post.url%></h4>
-    (<%= link_to 'edit', edit_post_path(post) %>)
+    <h4><%= link_to post.title, fix_url(post.url) %></h4>
+    <% if logged_in? %>
+      (<%= link_to 'edit', edit_post_path(post) if logged_in? %>)
+    <% end %>
     <p><%= post.description %></p>
     <p>       
       <span class="quiet">posted by</span> <%= post.creator.username %>
-      <small>at <%= post.created_at %></small>     
+      <small>at <%= display_datetime(post.created_at) %></small>     
     </p>
     <span>
+      <!-- post_path is posts/:id/ -->
       <%= link_to("#{post.comments.size} comments", post_path(post)) %>
     </span>
   </div>

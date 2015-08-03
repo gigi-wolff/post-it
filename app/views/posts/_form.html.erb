@@ -1,7 +1,13 @@
-<!-- model-backed form takes an ojbect ie @post and infers all else based on convention. Form returns a hash in params that can be used for mass assignment, in this case "post"=>{"title"=>"some title"}.
-Post.create(params[:post]) is equivalent Post.create("title"=>"some title")
+<!-- 
+Model backed form helpers are tied to an object. There has to be a setter method, a virtual attribute or a column in the database, available for that object when using the model backed form helpers. We use model backed form helpers usually when we need to create, edit, or update an object.
 
-text_field can to be any attribute (column) or virtual attribute of the post model that is permitted (post_controller under def post_params is where we set permissions). In the post model the attributes are: id, title, url, description, created at, updated at, user_id -->
+By convention, form_for creates a form based on a specific model object. We are able to create, edit, and update that object's attributes. A form can be created by passing form_for a string or symbol relating to the object we want to deal with.
+
+Here, the model-backed form takes an ojbect @post and infers the action and all else based on convention. Form_for checks to see if @post is a new or existing object. If its a new object, it routes the information submitted to the 'create route' by setting action='/posts' (url) and method='post' (verb). This can be seen by using "inspect element". In the case that #post is an exsisting object, its is routed to the update route, setting action='/posts/id' and method='post' (this works because there is a hidden _method="patch" which converts post to patch for rails to use). The information submitted is stored in a params hash that can be used for mass assignment, in this case "post"=>{"title"=>"some title"}.
+Post.create(params[:post]) is equivalent to Post.create("title"=>"some title")
+
+text_field can to be any attribute (column) or virtual attribute of the post model that is permitted (post_controller under def post_params is where we set permissions). In the post model, attributes are: id, title, url, description, created at, updated at, user_id and category_ids 
+-->
 
 <%= render 'shared/errors', obj: @post %>
 
@@ -18,7 +24,38 @@ text_field can to be any attribute (column) or virtual attribute of the post mod
     <div class = 'control-group'>
       <%= f.label :description %>
       <%= f.text_area :description, rows: 5%>
-    </div>    
+    </div>  
+    <br/>  
+    <!-- rails 4 method: collection_check_boxes better than html because rails helper does all upkeep
+    -->
+    <%= f.collection_check_boxes :category_ids, Category.all, :id, :name do |cb|%>
+      <% cb.label(class: "checkbox inline") {cb.check_box(class: "checkbox") + cb.text} %>
+    <% end%>
+    <br/>
     <%= f.submit(@post.new_record? ? 'Create Post' : 'Update Post', class:'btn btn-primary')%>
   <% end %>
+
+  <!-- Using html to indicate categories:
+  In a many-many association, rails gives you a virtual attr that
+  allows you to set mass associations by passing them in an array.
+  "category_ids" is such a virtual attribute. It saves the user's
+  check-box choices in array "category_ids.
+   
+  class Category < ActiveRecord::Base
+    has_many :post_categories
+    has_many :posts, through: :post_categories
+  end
+  (rails console:)
+  p = Post.first
+  p.category_ids (category ids associated with post p)
+  p.category_ids = [2,3] (p is in category 2 and 3)
+
+  using html to choose categories:
+  <select name='options[] multiple='multiple'>
+  (or for this case)
+  <select name='post[category_ids][] multiple='multiple'>
+    <option value='1'> option 1 </option>
+    <option value='2'> option 2 </option>
+  </select>
+  -->
 </div>
