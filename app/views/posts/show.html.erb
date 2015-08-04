@@ -43,12 +43,4 @@ This post action will be mapped by router.rb file to comments_controller "create
 <% end %>
 
 
-<h5>Comments:</h5>
-<% @post.comments.each do |comment| %>
-  <div class="well span8">
-    <en> "<%= comment.body %>"</en>
-    <br/>       
-    <span class="quiet">by</span> <%= comment.creator.username %>
-     <small>at <%= display_datetime(comment.created_at) %></small>     
-  </div>
-<% end %>
+<%= render 'comments/comments', obj: @post %>

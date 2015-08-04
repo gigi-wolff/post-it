@@ -10,5 +10,5 @@ class User < ActiveRecord::Base
   validates :username, presence: true, uniqueness: true
   #"on: :create" means password must be present whenever a user object is created
   #therefore this condition will not be invoked for updates of existing user object
-  validates :password, presence: true, on: :create, length: {minimum: 6}
+  validates :password, presence: true, on: :create, on: :update, length: {minimum: 6}
 end

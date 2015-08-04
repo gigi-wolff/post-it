@@ -58,8 +58,8 @@ class PostsController < ApplicationController
 
   # get '/posts/id/edit'
   def edit #url will be something like /post/3/edit, edit form will be rendered
-    #@post = Post.find(params[:id])
-    #edit.html rendered by default
+    #@post = Post.find(params[:id])... this is now done by set_user
+    #edit.html... rendered by default
   end
 
   # patch '/posts/id'

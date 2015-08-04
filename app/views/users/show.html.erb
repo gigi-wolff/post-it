@@ -1,0 +1,27 @@
+<%= render 'shared/content_title', title: "Profile: #{@user.username}" %>
+
+<div class='well'>
+  <dl class='dl-horizontal'>
+    <dt>Username:</dt>
+    <dd><%= @user.username%></dd>
+  </dl>
+</div>
+
+<h5><%= @user.username %>'s Activity</h5>
+
+<ul class="nav nav-tabs">
+  <li class="<%= 'active' if params[:tab].nil? %>">
+    <%= link_to "Posts (#{@user.posts.size})", user_path(@user) %>
+  </li>
+  <li class="<%= 'active' if params[:tab] == 'comments'%>">
+    <%= link_to "Comments (#{@user.comments.size})", user_path(@user, tab: 'comments') %>
+  </li> 
+</ul>
+
+<% if params[:tab].nil? %>
+  <!-- loops through user's posts one at a time -->
+  <%= render partial: "/posts/post", collection:@user.posts %>
+<% elsif params[:tab] == "comments" %>
+  <!-- shows all user's comments -->
+  <%= render 'comments/comments', obj: @user %>
+<% end %>

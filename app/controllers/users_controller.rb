@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  # call set_post before calling show, edit and update
+  before_action :set_user, only: [:show, :edit, :update]
+  before_action :require_same_user, only:[:edit, :update]
 
   def new
     @user = User.new 
@@ -17,14 +20,17 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit
+  def edit 
+  end
+
+  def show
   end
 
   def update # this is where the form displayed in 'edit' is submitted using verb "patch"
     if @user.update(user_params)
       flash[:notice] = "Profile is updated"
       # send to show user_path (add _path to the prefix)
-      redirect_to post_path(@user)
+      redirect_to user_path(@user)
     else
       render :edit
     end
@@ -35,5 +41,18 @@ class UsersController < ApplicationController
   def user_params 
     params.require(:user).permit(:username, :password)
   end
+
+  def set_user
+    # ask ActiveRecord to find the user object in the db using the id from params
+    @user = User.find(params[:id]) #looking at the model layer
+  end
+
+  def require_same_user
+    if current_user != @user
+      flash[:error] = "You cannot modify another users information."
+      redirect_to root_path
+    end
+  end
+
 end
 

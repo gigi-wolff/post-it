@@ -1,0 +1,12 @@
+<h5>Comments:</h5>
+<% obj.comments.each do |comment| %>
+  <div class="well span8">
+    <en> "<%= comment.body %>"</en>
+    <% if obj == @user %> <!-- show only on profile page -->
+      on <%= link_to comment.post.title, post_path(comment.post) %>
+    <% end %>
+    <br/>       
+    <span class="quiet">by</span> <%= link_to comment.creator.username, user_path(comment.creator) %>
+     <small>at <%= display_datetime(comment.created_at) %></small>     
+  </div>
+<% end %>
