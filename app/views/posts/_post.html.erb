@@ -1,4 +1,26 @@
 <div class="row">
+  <div class='span0 well text-center'>
+    <!-- want link to be a 'post' not a 'get', use " method: 'post' " 
+    (changes HTML to include java-script which builds and submits a form)
+    to submit parameters via the url use nameed_route(object, params), here route is
+    'vote_post_path', object is 'post' and param vote=true is 'vote: true'-->
+    <% if current_user %>
+      <%= link_to vote_post_path(post, vote: true), method: 'post' do %>
+        <i class='icon-thumbs-up'></i> <%= post.up_votes %>
+      <% end %>
+      <br/>
+      <!-- <%= post.total_votes %> net votes up -->
+      <br/>  
+      <%= link_to vote_post_path(post, vote: false), method: 'post' do %>
+        <i class='icon-thumbs-down'></i> <%= post.down_votes %>
+      <% end %> 
+    <% else %>
+      <br/>
+      <%= post.total_votes %> votes
+      <br/>
+    <% end %>
+
+  </div>
   <div class="span8 well">
     <%= render post.categories %>
     <h4><%= link_to post.title, fix_url(post.url) %></h4>

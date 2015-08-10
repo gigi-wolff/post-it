@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_many :posts
   has_many :comments
-
+  has_many :votes
   
   #add gem 'bcrypt-ruby', '=3.0.1' to gemfile to use has_secure_password method
   #set validations to false to manage validations ourselves 

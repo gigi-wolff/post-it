@@ -25,10 +25,19 @@ PostitTemplate::Application.routes.draw do
   # resource routing maps routes to controller actions replacing code above
   # with a single line of code:   "resources :posts"
 
-  #for each post, you have the ability to create a comment; comments are nested
-  #in each post
+  #for each post, you have the ability to create a comment and vote; comments and
+  #votes are nested in each post
   resources :posts, except: [:destroy] do
-    resources :comments, only: [:create]
+    #want route: POST /posts/id/vote => posts#vote
+    member do # will build 'POST /posts/id' part of route
+      post :vote
+    end
+    #for each comment, you have the ability to vote; votes are nested in comments
+    resources :comments, only: [:create] do
+      member do # will build 'POST /posts/post_id/id/comment' part of route
+        post :vote
+      end
+    end
   end
 
   resources :categories, only: [:new, :create, :show]

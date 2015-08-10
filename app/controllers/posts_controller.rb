@@ -1,22 +1,22 @@
 class PostsController < ApplicationController
   #1.Use before_action to set up an instance variable for an action, 
   # in this case, call set_post before calling show, edit and update
-  before_action :set_post, only: [:show, :edit, :update]
+  before_action :set_post, only: [:show, :edit, :update, :vote]
 
   #2.or to redirect based on some condition
   # call require_user for all Post methods except index and show
   # and unauthenicated user cannot create, edit or update a new post
   before_action :require_user, except: [:index, :show]
 
-  # get '/'
+  # GET '/'
   def index
     #Post.all accesses model layer and stores result in an instance variable
     #which is passed to the view
-    @posts = Post.all  
+    @posts = Post.all.sort_by{|x| x.total_votes}.reverse 
     render 'posts/index' #happens by default and end of each method
   end
 
-  # get '/posts/id'
+  # GET '/posts/id'
   def show   # Here we display the form to be filled out
     #already have @post at this point
     #you need a comment object for the model backed form in 'posts/show'
@@ -27,7 +27,7 @@ class PostsController < ApplicationController
     #so a comments_controller is needed to create a comment via "def create"    
   end
 
-  # get '/posts/new'
+  # GET '/posts/new'
   def new
     #set up a new instance variable which is an active record object
     #and pass it to the 'new' template in "new.html.erb" 
@@ -35,7 +35,7 @@ class PostsController < ApplicationController
     @post = Post.new 
   end
 
-  # post '/posts'
+  # POST '/posts'
   #the general pattern used in the action create that handles
   #submission of model-backed forms 
   def create 
@@ -56,13 +56,13 @@ class PostsController < ApplicationController
     end
   end
 
-  # get '/posts/id/edit'
+  # GET '/posts/id/edit'
   def edit #url will be something like /post/3/edit, edit form will be rendered
     #@post = Post.find(params[:id])... this is now done by set_user
     #edit.html... rendered by default
   end
 
-  # patch '/posts/id'
+  # PATCH '/posts/id'
   #the general pattern used in the action create that handles
   #submission of model-backed forms 
   def update # this is where the form displayed in 'edit' is submitted using verb "patch"
@@ -73,6 +73,21 @@ class PostsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  # POST /posts/:id/vote
+  def vote
+    #@post = Post.find(params[:id])... this is now done by set_user
+    #create vote object
+    vote = Vote.create(voteable: @post, creator: current_user, vote: params[:vote])
+
+    if vote.valid?
+      flash[:notice] = "Your vote was counted"
+    else
+      flash[:error] = "You can only vote for once for a particular item"
+    end
+
+    redirect_to :back #go back to whatever url you came from
   end
 
   private

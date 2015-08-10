@@ -1,12 +1,32 @@
 <h5>Comments:</h5>
 <% obj.comments.each do |comment| %>
-  <div class="well span8">
-    <en> "<%= comment.body %>"</en>
-    <% if obj == @user %> <!-- show only on profile page -->
-      on <%= link_to comment.post.title, post_path(comment.post) %>
-    <% end %>
-    <br/>       
-    <span class="quiet">by</span> <%= link_to comment.creator.username, user_path(comment.creator) %>
-     <small>at <%= display_datetime(comment.created_at) %></small>     
+  <div class="row">
+    <div class='span0 well text-center'>
+      <% if current_user %>
+        <%= link_to vote_post_comment_path(comment.post, comment, vote: true), method: 'post' do %>
+          <i class='icon-thumbs-up'></i> <%= comment.up_votes %>
+        <% end %>
+        <br/>
+        <!-- <%= comment.total_votes %> votes -->
+        <br/>
+        <%= link_to vote_post_comment_path(comment.post, comment, vote: false), method: 'post' do %>
+          <i class='icon-thumbs-down'></i> <%= comment.down_votes %>
+        <% end %>
+      <% else %>
+        <br/>
+        <%= comment.total_votes %> votes
+        <br/>
+      <% end %>
+    </div>
+
+    <div class="well span8">
+      <en> "<%= comment.body %>"</en>
+      <% if obj == @user %> <!-- show only on profile page -->
+        on <%= link_to comment.post.title, post_path(comment.post) %>
+      <% end %>
+      <br/>       
+      <span class="quiet">by</span> <%= link_to comment.creator.username, user_path(comment.creator) %>
+       <small>at <%= display_datetime(comment.created_at) %></small>     
+    </div>
   </div>
 <% end %>
