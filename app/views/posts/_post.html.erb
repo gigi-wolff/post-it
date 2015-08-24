@@ -1,22 +1,27 @@
 <div class="row">
   <div class='span0 well text-center'>
-    <!-- want link to be a 'post' not a 'get', use " method: 'post' " 
-    (changes HTML to include java-script which builds and submits a form)
-    to submit parameters via the url use nameed_route(object, params), here route is
-    'vote_post_path', object is 'post' and param vote=true is 'vote: true'-->
+    <!-- Want link to be a 'post' not a 'get'(need to submit a form), 
+    use " method: 'post' " to change HTML to include java-script which builds and submits a form.
+    To submit parameters via the url use named_route(object, params), here route is
+    'vote_post_path', object is 'post' and param vote=true is 'vote: true';
+    Use remote: true to specify that your submitting an ajax request (rails generates ajax code for you) -->
     <% if current_user %>
-      <%= link_to vote_post_path(post, vote: true), method: 'post' do %>
-        <i class='icon-thumbs-up'></i> <%= post.up_votes %>
+      <%= link_to vote_post_path(post, vote: true), method: 'post', remote: true do %>
+        <i class='icon-thumbs-up'></i> 
+        <span id='post_<%=post.id%>_up_votes'> <%= post.up_votes %> </span>
       <% end %>
       <br/>
       <!-- <%= post.total_votes %> net votes up -->
       <br/>  
-      <%= link_to vote_post_path(post, vote: false), method: 'post' do %>
-        <i class='icon-thumbs-down'></i> <%= post.down_votes %>
+      <%= link_to vote_post_path(post, vote: false), method: 'post', remote: true do %>
+        <i class='icon-thumbs-down'></i> 
+        <span id='post_<%=post.id%>_down_votes'> <%= post.down_votes %> </span>
       <% end %> 
     <% else %>
+       <i class='icon-thumbs-up'></i> <%= post.up_votes %>
       <br/>
-      <%= post.total_votes %> votes
+      <i class='icon-thumbs-down'></i> <%= post.down_votes %>
+      <!-- <%= post.total_votes %> votes -->
       <br/>
     <% end %>
 

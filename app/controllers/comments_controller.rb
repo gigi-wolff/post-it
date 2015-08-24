@@ -20,21 +20,28 @@ class CommentsController < ApplicationController
     end
   end
 
-    # POST /posts/:post_id/comments/:id/vote
-    # needs 2 objects, post and comment
-    def vote
+  # POST /posts/:post_id/comments/:id/vote
+  # needs 2 objects, post (:post_id) and comment (:id)
+  def vote
     #create vote object
-    comment = Comment.find(params[:id])
-    vote = Vote.create(voteable: comment, creator: current_user, vote: params[:vote])
+    @comment = Comment.find(params[:id])
+    #@post = Post.find(params[:post_id])
 
-    if vote.valid?
-      flash[:notice] = "Your vote was counted"
-    else
-      flash[:error] = "You can only vote for once for a particular item"
+    @vote = Vote.create(voteable: @comment, creator: current_user, vote: params[:vote])
+
+    respond_to do |format|
+      format.html do
+        if @vote.valid?
+          flash[:notice] = "Your vote was counted."
+        else
+          flash[:error] = "You can only vote for once for a comment."
+        end
+        redirect_to :back #go back to whatever url you came from
+      end  
+      format.js do   
+        format.js
+      end
     end
-
-    redirect_to :back #go back to whatever url you came from
-
   end
 
   

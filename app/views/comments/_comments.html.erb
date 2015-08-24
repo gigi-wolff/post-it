@@ -3,18 +3,23 @@
   <div class="row">
     <div class='span0 well text-center'>
       <% if current_user %>
-        <%= link_to vote_post_comment_path(comment.post, comment, vote: true), method: 'post' do %>
-          <i class='icon-thumbs-up'></i> <%= comment.up_votes %>
+        <%= link_to vote_post_comment_path(comment.post, comment, vote: true), method: 'post', remote: true do %>
+          <i class='icon-thumbs-up'></i>
+          <span id='comment_<%=comment.id%>_up_votes'> <%= comment.up_votes %> </span> 
         <% end %>
         <br/>
         <!-- <%= comment.total_votes %> votes -->
         <br/>
-        <%= link_to vote_post_comment_path(comment.post, comment, vote: false), method: 'post' do %>
-          <i class='icon-thumbs-down'></i> <%= comment.down_votes %>
+        <%= link_to vote_post_comment_path(comment.post, comment, vote: false), method: 'post',
+        remote: true do %>
+          <i class='icon-thumbs-down'></i>
+          <span id='comment_<%=comment.id%>_down_votes'> <%= comment.down_votes %> </span> 
         <% end %>
       <% else %>
+        <i class='icon-thumbs-up'></i> <%= comment.up_votes %>
         <br/>
-        <%= comment.total_votes %> votes
+        <i class='icon-thumbs-down'></i> <%= comment.down_votes %>
+        <!-- <%= comment.total_votes %> votes -->
         <br/>
       <% end %>
     </div>

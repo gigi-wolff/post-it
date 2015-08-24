@@ -79,15 +79,22 @@ class PostsController < ApplicationController
   def vote
     #@post = Post.find(params[:id])... this is now done by set_user
     #create vote object
-    vote = Vote.create(voteable: @post, creator: current_user, vote: params[:vote])
+    @vote = Vote.create(voteable: @post, creator: current_user, vote: params[:vote])
 
-    if vote.valid?
-      flash[:notice] = "Your vote was counted"
-    else
-      flash[:error] = "You can only vote for once for a particular item"
+    respond_to do |format|
+      format.html do # html request
+        if @vote.valid?
+          flash[:notice] = "Your vote was counted"
+        else
+          flash[:error] = "You can only vote for once for a post."
+        end
+        redirect_to :back #go back to whatever url you came from
+      end
+      format.js do #ajax request
+        #render a vote.js, which will have access to instance variables from vote method, by default
+        format.js
+      end
     end
-
-    redirect_to :back #go back to whatever url you came from
   end
 
   private
