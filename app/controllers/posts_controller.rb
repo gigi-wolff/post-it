@@ -108,7 +108,8 @@ class PostsController < ApplicationController
 
   def set_post
     # ask ActiveRecord to find the post object in the db using the id from params
-    @post = Post.find(params[:id]) #looking at the model layer
+    #@post = Post.find(params[:id]) #looking at the model layer
+    @post = Post.find_by(slug: params[:id])
   end
 
 end

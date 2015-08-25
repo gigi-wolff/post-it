@@ -8,14 +8,14 @@
     <% if current_user %>
       <%= link_to vote_post_path(post, vote: true), method: 'post', remote: true do %>
         <i class='icon-thumbs-up'></i> 
-        <span id='post_<%=post.id%>_up_votes'> <%= post.up_votes %> </span>
+        <span id='post_<%=post.slug%>_up_votes'> <%= post.up_votes %> </span>
       <% end %>
       <br/>
       <!-- <%= post.total_votes %> net votes up -->
       <br/>  
       <%= link_to vote_post_path(post, vote: false), method: 'post', remote: true do %>
         <i class='icon-thumbs-down'></i> 
-        <span id='post_<%=post.id%>_down_votes'> <%= post.down_votes %> </span>
+        <span id='post_<%=post.slug%>_down_votes'> <%= post.down_votes %> </span>
       <% end %> 
     <% else %>
        <i class='icon-thumbs-up'></i> <%= post.up_votes %>

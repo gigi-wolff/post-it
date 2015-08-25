@@ -44,7 +44,8 @@ class UsersController < ApplicationController
 
   def set_user
     # ask ActiveRecord to find the user object in the db using the id from params
-    @user = User.find(params[:id]) #looking at the model layer
+    #@user = User.find(params[:id]) #looking at the model layer
+    @user = User.find_by(slug: params[:id])
   end
 
   def require_same_user

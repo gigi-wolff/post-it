@@ -4,7 +4,7 @@ class CommentsController < ApplicationController
 
   # post '/posts/:post_id/comments'
   def create 
-    @post = Post.find(params[:post_id])
+    @post = Post.find_by(slug: params[:post_id])
     @comment = Comment.new(params.require(:comment).permit(:body))
     @comment.post = @post #associate comment with the particular post
     @comment.creator = current_user #returns user object of logged in user

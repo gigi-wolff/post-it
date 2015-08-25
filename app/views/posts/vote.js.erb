@@ -1,6 +1,6 @@
 <% if @vote.valid? %>
-  $('#post_<%=@post.id%>_up_votes').html('<%= @post.up_votes%>');
-  $('#post_<%=@post.id%>_down_votes').html('<%= @post.down_votes%>');
+  $('#post_<%=@post.slug%>_up_votes').html('<%= @post.up_votes%>');
+  $('#post_<%=@post.slug%>_down_votes').html('<%= @post.down_votes%>');
   alert('Your vote was counted.');
 <% else %>
   alert('You can only vote once for a post.');
