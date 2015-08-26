@@ -14,6 +14,14 @@ class User < ActiveRecord::Base
 
   before_save :generate_slug
 
+  def admin?
+    self.role == 'admin'
+  end
+
+  def moderator?
+    self.role == 'moderator'
+  end
+
   def generate_slug
     the_slug = to_slug(self.username)
     user = User.find_by slug: the_slug

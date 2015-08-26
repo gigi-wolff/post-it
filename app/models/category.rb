@@ -6,6 +6,7 @@ class Category < ActiveRecord::Base
 
   before_save :generate_slug
 
+
   def generate_slug
     the_slug = to_slug(self.name)
     cat = Category.find_by slug: the_slug
