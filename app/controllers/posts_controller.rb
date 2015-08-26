@@ -7,6 +7,7 @@ class PostsController < ApplicationController
   # call require_user for all Post methods except index and show
   # and unauthenicated user cannot create, edit or update a new post
   before_action :require_user, except: [:index, :show]
+  before_action :require_creator, only: [:edit, :update]
 
   # GET '/'
   def index
@@ -110,6 +111,10 @@ class PostsController < ApplicationController
     # ask ActiveRecord to find the post object in the db using the id from params
     #@post = Post.find(params[:id]) #looking at the model layer
     @post = Post.find_by(slug: params[:id])
+  end
+
+  def require_creator
+    access_denied unless logged_in? and (current_user == @post.creator || current_user.admin?)
   end
 
 end

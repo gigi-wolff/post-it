@@ -29,6 +29,7 @@ class ApplicationController < ActionController::Base
     access_denied unless logged_in? and current_user.admin
   end
 
+
   def access_denied
     flash[:error] = "You don't have permisson to do that"
     redirect_to root_path

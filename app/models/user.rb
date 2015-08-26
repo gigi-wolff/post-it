@@ -49,8 +49,6 @@ class User < ActiveRecord::Base
     str.downcase
   end
 
-
-
   def to_param
     self.slug
   end
