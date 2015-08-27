@@ -11,6 +11,9 @@ module ApplicationHelper
   end
 
   def display_datetime(date_time)
+    if logged_in? and !current_user.time_zone.blank?
+      date_time = date_time.in_time_zone(current_user.time_zone)
+    end
     date_time.strftime("%m/%d/%Y %l:%M%P %Z") #mm/dd/yyy hr:min pm
   end
 end
