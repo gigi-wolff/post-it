@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   #methods in application_controller are only available to other controllers
   #to make them available to view templates declare as helper_method
-  helper_method :current_user, :logged_in?, :require_user
+  helper_method :current_user, :logged_in?
 
   #returns user object if there's an authenticated user, else returns nil
   def current_user
@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_admin
-    access_denied unless logged_in? and current_user.admin
+    access_denied unless logged_in? and current_user.admin?
   end
 
 
