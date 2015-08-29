@@ -13,6 +13,10 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'bcrypt-ruby', '=3.0.1'
+#to use gem pushed to rubygems
+gem 'voteable_gigi'
+#to work on gem locally, specify path
+#gem 'voteable_gigi', path: '/Users/Gigi/voteable-gem'
 
 group :doc do
   gem 'sdoc', require: false

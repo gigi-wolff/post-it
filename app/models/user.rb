@@ -24,5 +24,4 @@ class User < ActiveRecord::Base
     self.role == 'moderator?'
   end
 
-
 end
